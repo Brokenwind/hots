@@ -1,0 +1,10 @@
+nlpyutil>=0.4.0
+newords>=1.2.0
+pandas
+pyyaml
+tqdm
+pyltp
+dataclasses
+pymysql
+sqlalchemy
+requests

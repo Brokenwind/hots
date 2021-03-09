@@ -176,16 +176,6 @@ def save_result(result, sentence_to_groups, name_prefix, cur_hour, data_mark):
         output_cols = ["id", "type", "hot", "score", "mark", "label"]
         cur_channel_pd.to_csv(result_path, index=False, header=None, encoding="utf-8", columns=output_cols)
 
-    sentence_groups_dir = os.path.join(common.SETENCE_TO_GROUPS_PATH, pre_name_prefix)
-    if not os.path.exists(sentence_groups_dir):
-        os.makedirs(sentence_groups_dir)
-    sentence_groups_path = os.path.join(sentence_groups_dir, "{}_{}.json".format(data_mark, name_prefix))
-
-    with open(sentence_groups_path, 'w', encoding="utf-8") as f:
-        json.dump(sentence_to_groups, f, ensure_ascii=False, indent=4)
-
 
 if __name__ == '__main__':
-    # total_channel_pipeline()
-    # multi_channel_pipeline()
     multi_pos_pipeline()
