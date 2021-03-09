@@ -16,7 +16,7 @@ from hots import common
 from nlpyutil import preprocess as preprocore
 from hots import corpus
 from nlpyutil import Logger
-from utils.ltp import Ltp
+from .ltp import Ltp
 
 _mds = set()
 
@@ -86,10 +86,7 @@ def count_words_with_corpus(corpus_data, name_prefix, data_mark, allow_tags=['n'
                                                        level=corpus.CorpusItemLevel.Article)
 
     _logger.info("start counting with multi thread")
-    if common.ENVIRONMENT == common.Env.Dev.value:
-        num_task = 1
-    else:
-        num_task = max(1, common.NUM_CPU)
+    num_task = max(1, common.NUM_CPU)
     partial_len = int(np.ceil(len(corpus_data) / num_task))
     if partial_len == 0:
         partial_len = len(corpus_data)
@@ -123,15 +120,15 @@ def count_words_with_corpus(corpus_data, name_prefix, data_mark, allow_tags=['n'
             allow = any(word_tag[1].startswith(tag) for tag in allow_tags)
             if not allow:
                 del total_counter[word]
-
+    """
     word_statistics_list_path = os.path.join(common.HOT_WORDS_PATH,
                                              "{}_word_statistics_{}.pkl".format(data_mark, name_prefix))
-
+    
     _logger.info("dump to pickle file")
     with open(word_statistics_list_path, 'wb') as f:
         pickle.dump(total_counter, f)
     _logger.info("finished the dump")
-
+    """
     return total_counter
 
 

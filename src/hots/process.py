@@ -208,10 +208,7 @@ def preprocess_filtered_full_data(content: pd.DataFrame,
     """
     处理经过锚定词过滤后的文本，这里的处理方式和预处理时的方法不一样
     """
-    if common.ENVIRONMENT == common.Env.Dev.value:
-        num_task = 1
-    else:
-        num_task = max(1, common.NUM_CPU)
+    num_task = max(1, common.NUM_CPU)
     partial_len = int(np.ceil(len(content) / num_task))
     if partial_len == 0:
         partial_len = len(content)
@@ -231,10 +228,13 @@ def preprocess_filtered_full_data(content: pd.DataFrame,
             extra = group_to_extra[group_key]
             total_group_to_sentence[group_key].extend(sentences)
             total_group_to_extra[group_key].extend(extra)
+    """
     name_prefix = time.strftime("%Y%m%d%H", time.localtime())
+    
     with open(os.path.join(common.DATA_PROCESSED_PATH, "tmp_group_sentences_{}_{}.pkl".format(name_prefix, data_mark)),
               "wb") as f:
         pickle.dump(total_group_to_sentence, f)
+    """
 
     return total_group_to_sentence, total_group_to_extra
 

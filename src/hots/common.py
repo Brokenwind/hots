@@ -25,7 +25,7 @@ PROJECT_ROOT_PATH = os.path.abspath(os.path.join(CUR_PATH, '../../'))
 # 配置文件路径
 CONFIG_PATH = os.path.join(PROJECT_ROOT_PATH, 'configs')
 _config = {}
-NUM_CPU = (int)(0.2 * TOTAL_NUM_CPU)
+NUM_CPU = max((int)(0.2 * TOTAL_NUM_CPU), 1)
 # 是否备份处理后的数据
 IS_BACKUP_PROCESSED = _config.get("is_backup_processed", False)
 # 聚合group的最小相似分数
@@ -48,6 +48,8 @@ CONFIGS_PATH = os.path.join(PROJECT_ROOT_PATH, 'configs')
 WORD2VEC_PATH = os.path.join(DATA_PATH, 'word2vec/word2vec_wx')
 # 新词发现相关数据文件
 NEW_WORDS_DATA_PATH = os.path.join(DATA_PATH, 'new_words')
+# 结果目录
+RESULT_PATH = os.path.join(DATA_PATH, 'result')
 # 词组文件的位置
 PHRASE_DATA_PATH = os.path.join(DATA_PATH, 'phrase')
 # ltp模型文件地址
@@ -90,8 +92,6 @@ FILTER_NOISE_REGEX_PATH = os.path.join(DATA_PATH, "filter_noise_regex.txt")
 FILTER_TOPIC_SENTENCE = os.path.join(DATA_PATH, "filter_topic_sentence.txt")
 # 过滤备选中心句的某些正则场景
 FILTER_TOPIC_REGEX = os.path.join(DATA_PATH, "filter_topic_regex.txt")
-# 过滤包含其中句子的文章
-FILTER_ARTICLE_SENTENCE = os.path.join(DATA_PATH, "filter_article_sentence.txt")
 # 在聚合goups的时候，需要排除的词
 FILTER_WORD_IN_CLUSTER = os.path.join(DATA_PATH, "filter_word_in_cluster.txt")
 # 需要排除的机构
@@ -115,3 +115,5 @@ DB_INFO_INTERVENE = _config.get("db_info_intervene", {})
 # 敏感词库位置
 SENSITIVE_KEYWORDS_PATH = os.path.join(DATA_PATH, 'sensitive')
 
+if not os.path.exists(RESULT_PATH):
+    os.mkdir(RESULT_PATH)

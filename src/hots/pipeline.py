@@ -82,7 +82,7 @@ def multi_channel_pipeline(full_data_pd: pd.DataFrame,
     return result_list, central_to_hot_groups
 
 
-def multi_pos_pipeline(data_mark,processed_path:str):
+def multi_pos_pipeline(data_mark, processed_path: str):
     cur_hour = time.strftime("%H", time.localtime())
     try:
         name_prefix = time.strftime("%Y%m%d", time.localtime())
@@ -131,7 +131,7 @@ def save_classify_result(result, sentence_to_groups, name_prefix, cur_hour, data
     pre_name_prefix = name_prefix
     # 保存结果
     name_prefix = name_prefix + cur_hour
-    result_pd = pd.DataFrame(data=result, columns=["id", "type", "hot", "score", "hotwords"])
+    result_pd = pd.DataFrame(data=result, columns=["id", "type", "hot", "score"])
     result_pd["mark"] = data_mark
     result_pd["label"] = label_name
 
@@ -140,7 +140,7 @@ def save_classify_result(result, sentence_to_groups, name_prefix, cur_hour, data
     result_path = os.path.join(common.RESULT_PATH, result_file_name)
     # 结果备份目录
     result_back_path = os.path.join(common.DATA_PROCESSED_PATH, result_file_name)
-    output_cols = ["id", "type", "hot", "score", "mark", "hotwords", "label"]
+    output_cols = ["id", "type", "hot", "score", "mark", "label"]
     result_pd.to_csv(result_path, index=False, header=None, encoding="utf-8", columns=output_cols)
     result_pd.to_csv(result_back_path, index=False, header=None, encoding="utf-8", columns=output_cols)
 
@@ -165,7 +165,7 @@ def save_result(result, sentence_to_groups, name_prefix, cur_hour, data_mark):
     pre_name_prefix = name_prefix
     # 保存结果
     name_prefix = name_prefix + cur_hour
-    result_pd = pd.DataFrame(data=result, columns=["id", "type", "hot", "score", "hotwords"])
+    result_pd = pd.DataFrame(data=result, columns=["id", "type", "hot", "score"])
     result_pd["mark"] = data_mark
     result_pd["label"] = ''
 
@@ -173,11 +173,8 @@ def save_result(result, sentence_to_groups, name_prefix, cur_hour, data_mark):
         result_file_name = "{}_topic_{}_{}.csv".format(channel_name, name_prefix, data_mark)
         # 结果存储目录
         result_path = os.path.join(common.RESULT_PATH, result_file_name)
-        # 结果备份目录
-        result_back_path = os.path.join(common.DATA_PROCESSED_PATH, result_file_name)
-        output_cols = ["id", "type", "hot", "score", "mark", "hotwords", "label"]
+        output_cols = ["id", "type", "hot", "score", "mark", "label"]
         cur_channel_pd.to_csv(result_path, index=False, header=None, encoding="utf-8", columns=output_cols)
-        cur_channel_pd.to_csv(result_back_path, index=False, header=None, encoding="utf-8", columns=output_cols)
 
     sentence_groups_dir = os.path.join(common.SETENCE_TO_GROUPS_PATH, pre_name_prefix)
     if not os.path.exists(sentence_groups_dir):

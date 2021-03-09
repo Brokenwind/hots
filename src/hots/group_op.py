@@ -85,10 +85,7 @@ def merge_word_group(corpus: list, word_groups: list, delimiter="_"):
     :param word_groups:
     :return:
     """
-    if common.ENVIRONMENT == common.Env.Dev.value:
-        num_task = 1
-    else:
-        num_task = max(1, common.NUM_CPU)
+    num_task = max(1, common.NUM_CPU)
     partial_len = int(np.ceil(len(corpus) / num_task))
     if partial_len == 0:
         partial_len = len(corpus)
@@ -224,10 +221,7 @@ def analyze_new_word_group(origin_corpus_data,
     _logger.info("start {} epoch searching".format(0))
     epoch_result_list = []
     pre_result = None
-    result = find_new_words_with_anchor_words(filtered_corpus_data,
-                                              load_previous=False,
-                                              previous_model_path="",
-                                              desc=name_prefix)
+    result = find_new_words_with_anchor_words(filtered_corpus_data)
     epoch_result_list.append(result)
     _logger.info("finished {} epoch searching".format(0))
     for idx in range(1, epoch):
@@ -241,10 +235,7 @@ def analyze_new_word_group(origin_corpus_data,
             new_word_groups.append(item[0].split(delimiter))
         filtered_corpus_data = merge_word_group(filtered_corpus_data, new_word_groups)
         pre_result = result
-        result = find_new_words_with_anchor_words(filtered_corpus_data,
-                                                  load_previous=False,
-                                                  previous_model_path="",
-                                                  desc=name_prefix)
+        result = find_new_words_with_anchor_words(filtered_corpus_data)
         epoch_result_list.append(result)
         _logger.info("finished {} epoch searching".format(idx))
     if not result:
@@ -253,13 +244,14 @@ def analyze_new_word_group(origin_corpus_data,
     _logger.info("filtering the result")
     filetered_result = filter_word_group(result, delimiter=delimiter, min_words=min_words, min_word_len=min_word_len)
     _logger.info("writing result to file")
-
+    """
     # 保存词组结果
     new_word_path = os.path.join(common.WORD_GROUPS_PATH,
                                  "{}{}_{}.csv".format(name_prefix, cur_hour, channel))
+    
     result_pd = pd.DataFrame(data=filetered_result, columns=["word", "score", "count"])
     result_pd.to_csv(new_word_path, index=False, encoding="utf-8")
-
+    """
     return filetered_result[0:1000], filtered_idx, epoch_result_list
 
 
